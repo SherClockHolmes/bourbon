@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "bourbon",
+    "bourbon_lexer",
+    "bourbon_template_macro",
+]

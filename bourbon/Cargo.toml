@@ -1,0 +1,10 @@
+[package]
+name = "bourbon"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bourbon_lexer = { path = "../bourbon_lexer" }
+bourbon_template_macro = { path = "../bourbon_template_macro" }
