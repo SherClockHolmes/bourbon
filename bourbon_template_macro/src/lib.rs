@@ -104,6 +104,22 @@ pub fn template(args: TokenStream, input: TokenStream) -> TokenStream {
         }
     }).collect();
 
+    let rocket_impl = if cfg!(feature = "rocket") {
+        quote! {
+            impl<'r> ::rocket::response::Responder<'r, 'static> for #name {
+                fn respond_to(self, _: &'r ::rocket::request::Request) -> ::rocket::response::Result<'static> {
+                    let html = self.render().unwrap();
+                    ::rocket::response::Response::build()
+                        .sized_body(html.len(), Cursor::new(html))
+                        .header(::rocket::http::ContentType::HTML)
+                        .ok()
+                }
+            }
+        }
+    } else {
+        quote! {}
+    };
+
     let expanded: TokenStream2 = quote! {
         impl ::bourbon::Renderable for #name {
             type Values = #values_type;
@@ -124,6 +140,7 @@ pub fn template(args: TokenStream, input: TokenStream) -> TokenStream {
             }
         }
 
+        #rocket_impl
         #input
     };
 

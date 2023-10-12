@@ -1,8 +1,6 @@
 # bourbon
 Templating on the rocks.
 
-## Example
-
 ```rust
 use bourbon::prelude::*;
 
@@ -50,5 +48,26 @@ struct TemplateBlock {
 struct TemplateWithBlock {
     name: String,
     name2: TemplateBlock,
+}
+```
+
+### Integrations
+
+To use `rocket` with bourbon, enable the following feature to Cargo.toml.
+
+```yaml
+bourbon = { version = "0.2.0", path = "../bourbon/bourbon", features = ["rocket"] }
+```
+
+```rust
+#[template(file = "templates/index.html")]
+struct TestTemplate {
+    name: String,
+    age: i32,
+}
+
+#[get("/")]
+fn index() -> TestTemplate {
+    TestTemplate::new(("Alice".to_string(), 27))
 }
 ```
